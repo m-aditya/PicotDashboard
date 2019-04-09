@@ -27,10 +27,10 @@ class AuthDevice extends React.Component {
     const dev=this.state.devices;
     this.props.updateDevices(dev);
 
-    var auth=[]
+    var auth={}
     for (key in this.state.devices){
       if(this.state.devices[key].authStat){
-        auth.push(key);
+        auth.key=true;
       }
     }
     this.props.updateAuthDev(auth);
