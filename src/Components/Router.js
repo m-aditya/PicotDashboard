@@ -21,6 +21,13 @@ class Router extends React.Component{
         authDev:[]
       };
 
+    componentWillMount(){
+        var AuthList=localStorage.getItem('AuthList');
+        //console.log(AuthList);
+        //this.setState({ authDev:AuthList });
+        this.state.authDev=AuthList;
+    }
+
     updateToken = token => {
         const accessToken=this.state.accessToken;
         accessToken.token=token;
@@ -40,6 +47,8 @@ class Router extends React.Component{
     updateAuthDev = devices => {
         var authDev=devices;
         this.setState({authDev});
+        //console.log(devices);
+        localStorage.setItem('AuthList',devices);
     }
 
     render() {

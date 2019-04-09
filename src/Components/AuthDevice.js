@@ -9,29 +9,31 @@ class AuthDevice extends React.Component {
   state = {
     inReq: {},
     devices:{},
-    AuthList:[]
   };
 
   componentDidMount() {
     this.setState({devices:this.props.pState.devices})
   }
 
-  componentDidUpdate(){
-    var auth=[]
-    {Object.keys(this.state.devices).map(key =>
-      this.state.devices[key].authstat ? (
-        auth.push(key)
-      ) : (
-        null
-      )
-    )}
-    this.setState({Authlist:auth});
+  componentDidUpdate() {
+    
+  };
+
+  authList=dev=>{
   }
 
   authDev=key=>{
     this.state.devices[key].authStat=true;
     const dev=this.state.devices;
     this.props.updateDevices(dev);
+
+    var auth=[]
+    for (key in this.state.devices){
+      if(this.state.devices[key].authStat){
+        auth.push(key);
+      }
+    }
+    this.props.updateAuthDev(auth);
   };
 
   blacklistDevice=key=>{
