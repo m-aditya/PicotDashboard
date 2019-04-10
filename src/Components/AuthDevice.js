@@ -3,6 +3,7 @@ import Websocket from "react-websocket";
 import Card2 from "./Card2";
 import SideBar from "./Sidebar";
 import styled from "styled-components";
+import Divider from '@material-ui/core/Divider';
 import "./App.css";
 
 class AuthDevice extends React.Component {
@@ -30,7 +31,7 @@ class AuthDevice extends React.Component {
     var auth={}
     for (key in this.state.devices){
       if(this.state.devices[key].authStat){
-        auth.key=true;
+        auth[key]=true;
       }
     }
     this.props.updateAuthDev(auth);
@@ -97,6 +98,17 @@ class AuthDevice extends React.Component {
       color:white;
     `;
 
+    const SubTitle = styled.h3`
+      display: block;
+      font-size: 2em;
+      margin-top: 0.67em;
+      margin-bottom: 0.67em;
+      margin-left: 0;
+      margin-right: 0;
+      font-weight: 600;
+      color:white;
+    `;
+
     return (
       <div id="App">
       
@@ -135,6 +147,7 @@ class AuthDevice extends React.Component {
               )}
             </GridContainer>
             <br />
+            <SubTitle>Blacklisted Devices</SubTitle>
             <br />
           </main>
         </div>

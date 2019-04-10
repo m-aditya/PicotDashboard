@@ -2,6 +2,7 @@ import React from "react"
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import App from './App';
 import AuthDevice from "./AuthDevice"
+import axios from "axios";
 
 
 class Router extends React.Component{
@@ -49,6 +50,12 @@ class Router extends React.Component{
         this.setState({authDev});
         //console.log(devices);
         localStorage.setItem('AuthList',JSON.stringify(devices));
+
+        var authSocket = new WebSocket("ws://192.168.3.43:8000");
+        var con = false
+        authSocket.onopen = () => {
+            authSocket.send(JSON.stringify(this.state.authDev));
+        }
     }
 
     render() {
