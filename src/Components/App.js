@@ -4,9 +4,10 @@ import Device from "./Device";
 import axios from "axios";
 import styled from "styled-components";
 import SideBar from "./Sidebar";
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Tooltip from '@material-ui/core/Tooltip';
 import "./App.css";
 
 class App extends React.Component {
@@ -23,16 +24,16 @@ class App extends React.Component {
 
     authDev: {},
     open: false,
-    vertical: 'top',
-    horizontal: 'right',
+    vertical: "top",
+    horizontal: "right"
   };
 
   handleOpen = this.handleOpen.bind(this);
   sendMessage = this.sendMessage.bind(this);
 
   componentWillMount() {
-    this.setState({devices:this.props.pState.devices})
-    this.setState({authDev:this.props.pState.authDev})
+    this.setState({ devices: this.props.pState.devices });
+    this.setState({ authDev: this.props.pState.authDev });
   }
 
   addConnected(devID) {
@@ -50,7 +51,7 @@ class App extends React.Component {
 
   handleData(rawData) {
     var dev = { ...this.state.devices };
-    var auth = {...this.state.authDev};
+    var auth = { ...this.state.authDev };
     var data = JSON.parse(rawData);
     var id = data.id;
     var self = this;
@@ -80,14 +81,13 @@ class App extends React.Component {
           blacklisted: false,
           inReq: {}
         };
-        if(auth[id]){
+        if (auth[id]) {
           dev[id] = {
-            authStat: true,
+            authStat: true
           };
         }
-        this.setState({open:true});
-      } 
-      else if (dev.hasOwnProperty(id)) {
+        this.setState({ open: true });
+      } else if (dev.hasOwnProperty(id)) {
         dev[id]["inReq"] = data;
         if (data.work === "disconnect") {
           dev[id]["status"] = false;
@@ -163,7 +163,7 @@ class App extends React.Component {
   }
 
   handleSnackClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     this.setState({ open: false });
@@ -228,32 +228,29 @@ class App extends React.Component {
               )}
             </GridContainer>
             <br />
-            
-
-
-<Snackbar
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          open={this.state.open}
-          autoHideDuration={6000}
-          onClose={this.handleSnackClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">New Device Connected!</span>}
-          action={[
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              onClick={this.handleSnackClose}
-            >
-              <CloseIcon />
-            </IconButton>,
-          ]}
-        />
+            <Snackbar
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={this.state.open}
+              autoHideDuration={6000}
+              onClose={this.handleSnackClose}
+              ContentProps={{
+                "aria-describedby": "message-id"
+              }}
+              message={<span id="message-id">New Device Connected!</span>}
+              action={[
+                <IconButton
+                  key="close"
+                  aria-label="Close"
+                  color="inherit"
+                  onClick={this.handleSnackClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              ]}
+            />
             <br />
           </main>
         </div>

@@ -7,37 +7,14 @@ import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 //import { CardMedia } from "@material-ui/core";
-import Tooltip from '@material-ui/core/Tooltip';
-import axios from "axios";
 
-class Device extends React.Component {
-  sendMessage = this.sendMessage.bind(this);
-
-  sendMessage() {
-    var bodyFormData = new FormData();
-
-    bodyFormData.set("clientid", this.props.index);
-    bodyFormData.set("topic", this.props.details.topic);
-
-    bodyFormData.set("message", "STOP");
-
-    var token = this.props.token;
-
-    axios.defaults.headers.common["Authorization"] = token;
-    axios({
-      method: "post",
-      url: "http://192.168.3.44:8080/clientsend",
-      data: bodyFormData
-    })
-      .then(function(response) {})
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
+class BlackDevice extends React.Component {
+  handleUnBlack = () => {
+    this.props.unBlacklistDevice(this.props.details.inReq.id);
+  };
 
   render() {
     const state = this.props.details;
-
     return (
       <Card>
         <CardContent>
@@ -49,15 +26,13 @@ class Device extends React.Component {
           </Typography>
         </CardContent>
         <CardActions style={{ justifyContent: "center" }}>
-        <Tooltip title="Switch Off Device">
-          <IconButton size="small" color="primary" onClick={this.sendMessage}>
-            <Icon>power_settings_new</Icon>
+          <IconButton size="small" color="primary" onClick={this.handleUnBlack}>
+            <Icon>check</Icon>
           </IconButton>
-        </Tooltip>
         </CardActions>
       </Card>
     );
   }
 }
 
-export default Device;
+export default BlackDevice;

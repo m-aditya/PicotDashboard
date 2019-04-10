@@ -1,45 +1,55 @@
 import React from "react";
 import Websocket from "react-websocket";
 import Card2 from "./Card2";
+import BlackDevice from "./BlackDevice";
 import SideBar from "./Sidebar";
 import styled from "styled-components";
-import Divider from '@material-ui/core/Divider';
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import "./App.css";
 
 class AuthDevice extends React.Component {
   state = {
     inReq: {},
-    devices:{},
+    devices: {},
+    open: false,
+    vertical: "top",
+    horizontal: "right"
   };
 
   componentDidMount() {
-    this.setState({devices:this.props.pState.devices})
+    this.setState({ devices: this.props.pState.devices });
   }
 
-  componentDidUpdate() {
-    
-  };
+  componentDidUpdate() {}
 
-  authList=dev=>{
-  }
+  authList = dev => {};
 
-  authDev=key=>{
-    this.state.devices[key].authStat=true;
-    const dev=this.state.devices;
+  authDev = key => {
+    this.state.devices[key].authStat = true;
+    const dev = this.state.devices;
     this.props.updateDevices(dev);
 
-    var auth={}
-    for (key in this.state.devices){
-      if(this.state.devices[key].authStat){
-        auth[key]=true;
+    var auth = {};
+    for (key in this.state.devices) {
+      if (this.state.devices[key].authStat) {
+        auth[key] = true;
       }
     }
     this.props.updateAuthDev(auth);
+    this.setState({ open: true });
   };
 
-  blacklistDevice=key=>{
-    this.state.devices[key].blacklisted=true;
-    const dev=this.state.devices;
+  blacklistDevice = key => {
+    this.state.devices[key].blacklisted = true;
+    const dev = this.state.devices;
+    this.props.updateDevices(dev);
+  };
+
+  unBlacklistDevice = key => {
+    this.state.devices[key].blacklisted = false;
+    const dev = this.state.devices;
     this.props.updateDevices(dev);
   };
 
@@ -54,8 +64,8 @@ class AuthDevice extends React.Component {
       if (!dev.hasOwnProperty(id)) {
         dev[id] = {
           status: true,
-          authStat:false,
-          blacklisted:false,
+          authStat: false,
+          blacklisted: false,
           inReq: {}
         };
       } else if (dev.hasOwnProperty(id)) {
@@ -73,7 +83,6 @@ class AuthDevice extends React.Component {
 
   handleOpen() {
     //alert("connected:)");
-
   }
 
   handleClose() {
@@ -95,7 +104,7 @@ class AuthDevice extends React.Component {
       margin-left: 0;
       margin-right: 0;
       font-weight: 600;
-      color:white;
+      color: white;
     `;
 
     const SubTitle = styled.h3`
@@ -106,12 +115,11 @@ class AuthDevice extends React.Component {
       margin-left: 0;
       margin-right: 0;
       font-weight: 600;
-      color:white;
+      color: white;
     `;
 
     return (
       <div id="App">
-      
         <Websocket
           url="ws://192.168.3.44:8081"
           onMessage={this.handleData.bind(this)}
@@ -123,22 +131,23 @@ class AuthDevice extends React.Component {
           }}
         />
         <div id="outer-container">
-        <Title>Authorise Devices</Title>
+          <Title>Authorise Devices</Title>
           <SideBar
             pageWrapId={"page-wrap"}
             outerContainerId={"outer-container"}
           />
           <main id="page-wrap">
-          
             <GridContainer>
               {Object.keys(this.state.devices).map(key =>
-                this.state.devices[key].status && !this.state.devices[key].blacklisted && !this.state.devices[key].authStat ? (
+                this.state.devices[key].status &&
+                !this.state.devices[key].blacklisted &&
+                !this.state.devices[key].authStat ? (
                   <Card2
                     key={key}
                     index={key}
                     details={this.state.devices[key]}
                     token={this.props.pState.accessToken.token}
-                    authDev={this.authDev} 
+                    authDev={this.authDev}
                     blacklistDevice={this.blacklistDevice}
                   />
                 ) : (
@@ -149,6 +158,43 @@ class AuthDevice extends React.Component {
             <br />
             <SubTitle>Blacklisted Devices</SubTitle>
             <br />
+            <GridContainer>
+              {Object.keys(this.state.devices).map(key =>
+                this.state.devices[key].blacklisted ? (
+                  <BlackDevice
+                    key={key}
+                    index={key}
+                    details={this.state.devices[key]}
+                    unBlacklistDevice={this.unBlacklistDevice}
+                  />
+                ) : (
+                  <div />
+                )
+              )}
+            </GridContainer>
+            <Snackbar
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={this.state.open}
+              autoHideDuration={6000}
+              onClose={this.handleSnackClose}
+              ContentProps={{
+                "aria-describedby": "message-id"
+              }}
+              message={<span id="message-id">Device Authorised!</span>}
+              action={[
+                <IconButton
+                  key="close"
+                  aria-label="Close"
+                  color="inherit"
+                  onClick={this.handleSnackClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              ]}
+            />
           </main>
         </div>
       </div>
