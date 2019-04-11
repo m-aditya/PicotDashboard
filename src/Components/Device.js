@@ -5,7 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
 
 class Device extends React.Component {
@@ -47,11 +47,11 @@ class Device extends React.Component {
           </Typography>
         </CardContent>
         <CardActions style={{ justifyContent: "center" }}>
-        <Tooltip title="Switch Off Device">
-          <IconButton size="small" color="primary" onClick={this.sendMessage}>
-            <Icon>power_settings_new</Icon>
-          </IconButton>
-        </Tooltip>
+          <Tooltip title="Switch Off Device">
+            <IconButton size="small" color="primary" onClick={this.sendMessage}>
+              <Icon>power_settings_new</Icon>
+            </IconButton>
+          </Tooltip>
         </CardActions>
       </Card>
     );

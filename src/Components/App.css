@@ -80,3 +80,6 @@ main {
   text-align: center;
   overflow: auto;
 }
+#rootDevice {
+  border: white,
+}
