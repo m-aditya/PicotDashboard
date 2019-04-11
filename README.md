@@ -6,6 +6,8 @@
 ![Code style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/m-aditya/PicotDashboard.svg)
 
+Dashboard for the PICOT Project done in ReactJS using:
+
 - Styled Components
 - Material-UI
 - Prettier - an opinionated code formatter.
