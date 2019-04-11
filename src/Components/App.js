@@ -7,7 +7,6 @@ import SideBar from "./Sidebar";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
-import Tooltip from '@material-ui/core/Tooltip';
 import "./App.css";
 
 class App extends React.Component {
@@ -116,8 +115,9 @@ class App extends React.Component {
     var bodyFormData = new FormData();
     bodyFormData.set("username", "admin");
     bodyFormData.set("password", "admin");
-
-    var self = this;
+    var at=this.props.pState.accessToken.token
+    if(at.length===0){
+      var self = this;
     axios({
       method: "post",
       url: "http://192.168.3.44:8080/api/login",
@@ -134,6 +134,11 @@ class App extends React.Component {
       .catch(function(error) {
         console.log(error);
       });
+    }else{
+      var accessToken=this.state.accessToken;
+      this.setState({accessToken:this.props.pState.accessToken})
+    }
+    
   }
 
   handleClose() {
@@ -219,6 +224,7 @@ class App extends React.Component {
                   <Device
                     key={key}
                     index={key}
+                    topic={this.state.devices[key].inReq.topic}
                     details={this.state.devices[key]}
                     token={this.state.accessToken.token}
                   />

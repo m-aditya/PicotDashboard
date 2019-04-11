@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import App from "./App";
 import AuthDevice from "./AuthDevice";
-import axios from "axios";
+import SmartContracter from "./SmartContracter";
 
 class Router extends React.Component {
   state = {
@@ -30,6 +30,10 @@ class Router extends React.Component {
     const accessToken = this.state.accessToken;
     accessToken.token = token;
     this.setState({ accessToken });
+    var authSocket = new WebSocket("ws://192.168.3.43:8000");
+    authSocket.onopen = () => {
+        authSocket.send(JSON.stringify(this.state.accessToken.token));
+      };
   };
 
   updateDevices = newDevices => {
@@ -49,7 +53,6 @@ class Router extends React.Component {
     localStorage.setItem("AuthList", JSON.stringify(devices));
 
     var authSocket = new WebSocket("ws://192.168.3.43:8000");
-    var con = false;
     authSocket.onopen = () => {
       authSocket.send(JSON.stringify(this.state.authDev));
     };
@@ -81,6 +84,16 @@ class Router extends React.Component {
                 pState={this.state}
                 updateAuthDev={this.updateAuthDev}
                 updateDevices={this.updateDevices}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/SmartContract"
+            render={props => (
+              <SmartContracter
+                {...props}
+                pState={this.state}
               />
             )}
           />

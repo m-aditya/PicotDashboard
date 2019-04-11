@@ -13,8 +13,8 @@ class Sidebar extends React.Component {
         <Link className="menu-item" to="/AuthoriseDevices">
           Authorise Devices
         </Link>
-        <Link className="menu-item" to="/Something">
-          Something
+        <Link className="menu-item" to="/SmartContract">
+          Smart Contract
         </Link>
         <Link className="menu-item" to="/Settings">
           Settings

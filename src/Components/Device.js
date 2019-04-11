@@ -3,10 +3,8 @@ import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-//import Button from '@material-ui/core/Button';
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
-//import { CardMedia } from "@material-ui/core";
 import Tooltip from '@material-ui/core/Tooltip';
 import axios from "axios";
 
@@ -17,7 +15,7 @@ class Device extends React.Component {
     var bodyFormData = new FormData();
 
     bodyFormData.set("clientid", this.props.index);
-    bodyFormData.set("topic", this.props.details.topic);
+    bodyFormData.set("topic", this.props.topic);
 
     bodyFormData.set("message", "STOP");
 
