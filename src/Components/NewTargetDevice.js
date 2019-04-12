@@ -24,17 +24,16 @@ const styles = theme => ({
 });
 
 class TargetForm extends React.Component {
-  state = {
-  };
+  state = {};
 
   handleAction = event => {
     this.setState({ targetAction: event.target.value });
-    this.props.handleTargetAction(event.target.value,this.props.id);
+    this.props.handleTargetAction(event.target.value);
   };
 
   handleDevice = event => {
     this.setState({ targetDevice: event.target.value });
-    this.props.handleTargetDevice(event.target.value,this.props.id);
+    this.props.handleTargetDevice(event.target.value);
   };
 
   render() {
@@ -54,7 +53,7 @@ class TargetForm extends React.Component {
           <Select
             style={{ margin: 10, minWidth: 150 }}
             value={this.state.targetDevice}
-            onChange={this.handleDevice}
+            onChange={this.props.handleTargetDevice}
             input={
               <OutlinedInput
                 //labelWidth={this.state.labelWidth}

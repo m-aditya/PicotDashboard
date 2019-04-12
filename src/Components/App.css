@@ -2,7 +2,7 @@
 
 #App {
   font-family: 'Montserrat', sans-serif;
-  height: 100vh;
+  min-height: 100vh;
   background:#4dabf5;
 }
 
@@ -14,6 +14,8 @@
 #page-wrap {
   text-align: center;
   overflow: auto;
+  margin: auto;
+  padding: 8em 15em 3em;
 }
 
 .bm-item {
@@ -76,10 +78,18 @@
 
 main {
   height: 100%;
-  padding: 8em 15em 3em;
+  
   text-align: center;
   overflow: auto;
 }
+
+#page-wrap2 {
+  text-align: center;
+  overflow: auto;
+  margin: auto;
+  padding: 3em 15em 3em;
+}
+
 #rootDevice {
   border: white,
 }

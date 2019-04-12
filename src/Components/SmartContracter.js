@@ -9,6 +9,12 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Paper from "@material-ui/core/Paper";
 import TargetForm from "./TargetForm";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import { MuiThemeProvider,createMuiTheme } from '@material-ui/core/styles';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import Dummy from "./Dummy";
+import Tooltip from "@material-ui/core/Tooltip";
 import "./App.css";
 
 const styles = theme => ({
@@ -20,6 +26,7 @@ const styles = theme => ({
   },
   paperRoot: {
     margin: "auto",
+    marginTop: "0",
     width: "50%",
     paddingTop: theme.spacing.unit * 3,
     paddingBottom: theme.spacing.unit * 3,
@@ -43,16 +50,27 @@ const styles = theme => ({
   }
 });
 
+const theme = createMuiTheme({
+  palette: {
+    primary: deepPurple,
+  },
+});
+
 class SmartContracter extends React.Component {
   state = {
     inReq: {},
     devices: {},
     labelWidth: 0,
     TargetAction: [],
-    count: 0
+    TargetDevice: [],
+    count: 1,
+    show: new Array(10).fill(false),
   };
 
   componentDidMount() {
+    var show=this.state.show;
+    show[0]=true
+    this.setState({ show });
     this.setState({ devices: this.props.pState.devices });
   }
 
@@ -60,19 +78,41 @@ class SmartContracter extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleTargetDevice = key => {
-    var count = this.state.count + 1;
-    this.setState({ count });
-    this.setState({ TargetDevice: key });
+  handleTargetDevice = (key,id) => {
+    var TargetDevice = this.state.TargetDevice;
+    TargetDevice[id]=key;
+    this.setState({ TargetDevice });
   };
 
-  handleTargetAction = action => {
+  handleTargetAction = (action,id) => {
     var TargetAction = this.state.TargetAction;
-    TargetAction.push(action);
-    var count = this.state.count + 1;
-    this.setState({ count });
+    TargetAction[id]=action;
     this.setState({ TargetAction });
   };
+
+  addTargetDevice=(count)=>{
+    var count = this.state.count;
+    var show=this.state.show;
+    show[count]=true
+    this.setState({ show });
+    count=count+1;
+    this.setState({ count });
+  }
+
+  generateTargets = () => {
+    let targets = []
+    for (let i = 0; i < 10; i++) {
+      targets.push(this.state.show[i]?<TargetForm
+        devices={this.state.devices}
+        handleTargetAction={this.handleTargetAction}
+        handleTargetDevice={this.handleTargetDevice}
+        id={i}
+      />:null)
+    }
+    return targets
+}
+
+
 
   render() {
     const { classes } = this.props;
@@ -95,90 +135,93 @@ class SmartContracter extends React.Component {
     `;
 
     return (
-      <div id="App">
-        <div id="outer-container">
-          <Title>Smart Contract</Title>
-          <SideBar
-            pageWrapId={"page-wrap"}
-            outerContainerId={"outer-container"}
-          />
-          <main id="page-wrap">
-            <Paper className={classes.paperRoot} elevation={2}>
-              <SubTitle>Root Device</SubTitle>
+      <MuiThemeProvider theme={theme}>
+        <div id="App">
+          <div id="outer-container">
+            <Title>Smart Contract</Title>
+            <SideBar
+              pageWrapId={"page-wrap2"}
+              outerContainerId={"outer-container"}
+            />
+            <main id="page-wrap2">
+              <Paper className={classes.paperRoot} elevation={2}>
+                <SubTitle>Root Device</SubTitle>
 
-              <form className={classes.root} autoComplete="off">
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel
-                    ref={ref => {
-                      this.InputLabelRef = ref;
-                    }}
-                    htmlFor="outlined-age-simple"
-                    shrink
-                  >
-                    Root Device
-                  </InputLabel>
-                  <Select
-                    style={{ margin: 10, minWidth: 150 }}
-                    value={this.state.rootDevice}
-                    onChange={this.handleChange}
-                    input={
-                      <OutlinedInput
-                        labelWidth={this.state.labelWidth}
-                        name="rootDevice"
-                        id="outlined-age-simple"
-                      />
-                    }
-                  >
-                    {Object.keys(this.state.devices).map(key =>
-                      this.state.devices[key].authStat ? (
-                        <MenuItem value={key}>{key}</MenuItem>
-                      ) : null
-                    )}
-                  </Select>
-                </FormControl>
+                <form className={classes.root} autoComplete="off">
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel
+                      ref={ref => {
+                        this.InputLabelRef = ref;
+                      }}
+                      htmlFor="outlined-age-simple"
+                      shrink
+                    >
+                      Root Device
+                    </InputLabel>
+                    <Select
+                      style={{ margin: 10, minWidth: 150 }}
+                      value={this.state.rootDevice}
+                      onChange={this.handleChange}
+                      input={
+                        <OutlinedInput
+                          labelWidth={this.state.labelWidth}
+                          name="rootDevice"
+                          id="outlined-age-simple"
+                        />
+                      }
+                    >
+                      {Object.keys(this.state.devices).map(key =>
+                        this.state.devices[key].authStat ? (
+                          <MenuItem value={key}>{key}</MenuItem>
+                        ) : null
+                      )}
+                    </Select>
+                  </FormControl>
 
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel
-                    ref={ref => {
-                      this.InputLabelRef = ref;
-                    }}
-                    htmlFor="outlined-age-simple"
-                    shrink
-                  >
-                    Action
-                  </InputLabel>
-                  <Select
-                    style={{ margin: 10, minWidth: 150 }}
-                    value={this.state.action}
-                    onChange={this.handleChange}
-                    input={
-                      <OutlinedInput
-                        labelWidth={this.state.labelWidth}
-                        name="action"
-                        id="outlined-age-simple"
-                      />
-                    }
-                  >
-                    <MenuItem value="on">On</MenuItem>
-                    <MenuItem value="off">Off</MenuItem>
-                  </Select>
-                </FormControl>
-              </form>
-            </Paper>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel
+                      ref={ref => {
+                        this.InputLabelRef = ref;
+                      }}
+                      htmlFor="outlined-age-simple"
+                      shrink
+                    >
+                      Action
+                    </InputLabel>
+                    <Select
+                      style={{ margin: 10, minWidth: 150 }}
+                      value={this.state.action}
+                      onChange={this.handleChange}
+                      input={
+                        <OutlinedInput
+                          labelWidth={this.state.labelWidth}
+                          name="action"
+                          id="outlined-age-simple"
+                        />
+                      }
+                    >
+                      <MenuItem value="on">On</MenuItem>
+                      <MenuItem value="off">Off</MenuItem>
+                    </Select>
+                  </FormControl>
+                </form>
+              </Paper>
 
-            <br />
+              <br />
 
-            <Paper className={classes.paperTarget} elevation={4}>
-              <SubTitle>Target Devices</SubTitle>
-              <TargetForm
-                devices={this.state.devices}
-                handleTargetAction={this.handleTargetAction}
-                handleTargetDevice={this.handleTargetDevice}
-              />
-            </Paper>
-          </main>
+              <Paper className={classes.paperTarget} elevation={4}>
+                <SubTitle>Target Devices</SubTitle>
+                {this.generateTargets()}
+                <Tooltip title="Add Another Target Device">
+                  <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.addTargetDevice}>
+                    <AddIcon />
+                  </Fab> 
+                </Tooltip>
+              </Paper>
+            </main>
+          </div>
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
