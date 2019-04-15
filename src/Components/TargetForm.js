@@ -24,17 +24,16 @@ const styles = theme => ({
 });
 
 class TargetForm extends React.Component {
-  state = {
-  };
+  state = {};
 
   handleAction = event => {
     this.setState({ targetAction: event.target.value });
-    this.props.handleTargetAction(event.target.value,this.props.id);
+    this.props.handleTargetAction(event.target.value, this.props.id);
   };
 
   handleDevice = event => {
     this.setState({ targetDevice: event.target.value });
-    this.props.handleTargetDevice(event.target.value,this.props.id);
+    this.props.handleTargetDevice(event.target.value, this.props.id);
   };
 
   render() {

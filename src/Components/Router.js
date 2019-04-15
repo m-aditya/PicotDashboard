@@ -21,8 +21,6 @@ class Router extends React.Component {
 
   componentWillMount() {
     var AuthList = JSON.parse(localStorage.getItem("AuthList"));
-    //console.log(AuthList);
-    //this.setState({ authDev:AuthList });
     this.state.authDev = AuthList;
   }
 
@@ -32,8 +30,8 @@ class Router extends React.Component {
     this.setState({ accessToken });
     var authSocket = new WebSocket("ws://192.168.3.43:8000");
     authSocket.onopen = () => {
-        authSocket.send(JSON.stringify(this.state.accessToken.token));
-      };
+      authSocket.send(JSON.stringify(this.state.accessToken.token));
+    };
   };
 
   updateDevices = newDevices => {
@@ -49,7 +47,6 @@ class Router extends React.Component {
   updateAuthDev = devices => {
     var authDev = devices;
     this.setState({ authDev });
-    //console.log(devices);
     localStorage.setItem("AuthList", JSON.stringify(devices));
 
     var authSocket = new WebSocket("ws://192.168.3.43:8000");
@@ -90,12 +87,7 @@ class Router extends React.Component {
           <Route
             exact
             path="/SmartContract"
-            render={props => (
-              <SmartContracter
-                {...props}
-                pState={this.state}
-              />
-            )}
+            render={props => <SmartContracter {...props} pState={this.state} />}
           />
           <Route path="/" component={App} />
         </Switch>

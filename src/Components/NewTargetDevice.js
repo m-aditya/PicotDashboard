@@ -24,7 +24,9 @@ const styles = theme => ({
 });
 
 class TargetForm extends React.Component {
-  state = {};
+  state = {
+    labelWidth=0,
+  };
 
   handleAction = event => {
     this.setState({ targetAction: event.target.value });
@@ -56,7 +58,7 @@ class TargetForm extends React.Component {
             onChange={this.props.handleTargetDevice}
             input={
               <OutlinedInput
-                //labelWidth={this.state.labelWidth}
+                labelWidth={this.state.labelWidth}
                 name="targetDevice"
                 id="outlined-age-simple"
               />
@@ -86,7 +88,7 @@ class TargetForm extends React.Component {
             onChange={this.handleAction}
             input={
               <OutlinedInput
-                //labelWidth={this.state.labelWidth}
+                labelWidth={this.state.labelWidth}
                 name="targetAction"
                 id="outlined-age-simple"
               />

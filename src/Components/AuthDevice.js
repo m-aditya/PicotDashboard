@@ -2,12 +2,18 @@ import React from "react";
 import Websocket from "react-websocket";
 import Card2 from "./Card2";
 import BlackDevice from "./BlackDevice";
-import SideBar from "./Sidebar";
+//import SideBar from "./Sidebar";
+import AppBar from "./AppBar";
 import styled from "styled-components";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import { withStyles } from "@material-ui/core/styles";
 import "./App.css";
+
+const styles = theme => ({
+  toolbar: theme.mixins.toolbar
+});
 
 class AuthDevice extends React.Component {
   state = {
@@ -118,6 +124,8 @@ class AuthDevice extends React.Component {
       color: white;
     `;
 
+    const { classes } = this.props;
+
     return (
       <div id="App">
         <Websocket
@@ -131,11 +139,9 @@ class AuthDevice extends React.Component {
           }}
         />
         <div id="outer-container">
+          <AppBar />
+          <div className={classes.toolbar} />
           <Title>Authorise Devices</Title>
-          <SideBar
-            pageWrapId={"page-wrap"}
-            outerContainerId={"outer-container"}
-          />
           <main id="page-wrap">
             <GridContainer>
               {Object.keys(this.state.devices).map(key =>
@@ -202,4 +208,4 @@ class AuthDevice extends React.Component {
   }
 }
 
-export default AuthDevice;
+export default withStyles(styles)(AuthDevice);

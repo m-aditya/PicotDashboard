@@ -3,11 +3,17 @@ import Websocket from "react-websocket";
 import Device from "./Device";
 import axios from "axios";
 import styled from "styled-components";
-import SideBar from "./Sidebar";
+//import SideBar from "./Sidebar";
+import AppBar from "./AppBar";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import { withStyles } from "@material-ui/core/styles";
 import "./App.css";
+
+const styles = theme => ({
+  toolbar: theme.mixins.toolbar
+});
 
 class App extends React.Component {
   state = {
@@ -93,14 +99,6 @@ class App extends React.Component {
         } else {
           dev[id]["status"] = true;
         }
-        /*if(dev[id]['inReq']['work']==='disconnect'){
-            dev[id]['status']=false;
-            this.removeConnected(id);
-        }
-        else if(dev[id]['inReq']['work']==='connect'){
-          dev[id]['status']=true;
-          this.addConnected(id);
-      }*/
       }
     }
     this.setState({ devices: dev });
@@ -115,30 +113,29 @@ class App extends React.Component {
     var bodyFormData = new FormData();
     bodyFormData.set("username", "admin");
     bodyFormData.set("password", "admin");
-    var at=this.props.pState.accessToken.token
-    if(at.length===0){
+    var at = this.props.pState.accessToken.token;
+    if (at.length === 0) {
       var self = this;
-    axios({
-      method: "post",
-      url: "http://192.168.3.44:8080/api/login",
-      data: bodyFormData,
-      config: { headers: { "Content-Type": "multipart/form-data" } }
-    })
-      .then(function(response) {
-        var token = response.data.access_token;
-        var accessToken = { ...self.state.accessToken };
-        accessToken.token = token;
-        self.props.updateToken(token);
-        self.setState({ accessToken });
+      axios({
+        method: "post",
+        url: "http://192.168.3.44:8080/api/login",
+        data: bodyFormData,
+        config: { headers: { "Content-Type": "multipart/form-data" } }
       })
-      .catch(function(error) {
-        console.log(error);
-      });
-    }else{
-      var accessToken=this.state.accessToken;
-      this.setState({accessToken:this.props.pState.accessToken})
+        .then(function(response) {
+          var token = response.data.access_token;
+          var accessToken = { ...self.state.accessToken };
+          accessToken.token = token;
+          self.props.updateToken(token);
+          self.setState({ accessToken });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    } else {
+      var accessToken = this.state.accessToken;
+      this.setState({ accessToken: this.props.pState.accessToken });
     }
-    
   }
 
   handleClose() {
@@ -175,6 +172,8 @@ class App extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     const GridContainer = styled.div`
       display: grid;
       grid-gap: 20px;
@@ -205,18 +204,10 @@ class App extends React.Component {
           }}
         />
         <div id="outer-container">
+          <AppBar />
+          <div className={classes.toolbar} />
           <Title>Dashboard</Title>
-          <SideBar
-            pageWrapId={"page-wrap"}
-            outerContainerId={"outer-container"}
-            state={this.state}
-          />
           <main id="page-wrap">
-            {/*Data:{JSON.stringify(this.state.devices, null, 2)}
-            <br />
-            Connected:{JSON.stringify(this.state.connected, null, 2)}
-            <br />
-            <br />*/}
             <GridContainer>
               {Object.keys(this.state.devices).map(key =>
                 this.state.devices[key].status &&
@@ -265,4 +256,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withStyles(styles)(App);

@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,800');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,800");
 
 #App {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   min-height: 100vh;
-  background:#4dabf5;
+  background: #4dabf5;
 }
 
 #outer-container {
@@ -29,12 +29,10 @@
 
 .bm-item:hover {
   box-shadow: 2px 2px 5px #1769aa;
-  
 }
- 
+
 .bm-item::selection {
   box-shadow: 2px 2px 5px #1769aa;
-  
 }
 
 .bm-burger-button {
@@ -46,7 +44,7 @@
 }
 
 .bm-burger-bars {
-  background:#ffffff;
+  background: #ffffff;
 }
 
 .bm-cross-button {
@@ -78,7 +76,7 @@
 
 main {
   height: 100%;
-  
+
   text-align: center;
   overflow: auto;
 }
@@ -91,5 +89,14 @@ main {
 }
 
 #rootDevice {
-  border: white,
+  border: white;
+}
+
+.fab {
+  margin: 0px;
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  position: fixed;
 }
