@@ -14,10 +14,11 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import deepPurple from "@material-ui/core/colors/deepPurple";
-import Icon from "@material-ui/core/Icon";
 import Tooltip from "@material-ui/core/Tooltip";
 import "./App.css";
-import { Typography } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const styles = theme => ({
   root: {
@@ -75,7 +76,8 @@ class SmartContracter extends React.Component {
     TargetAction: [],
     TargetDevice: [],
     count: 1,
-    show: new Array(10).fill(false)
+    show: new Array(10).fill(false),
+    open: false,
   };
 
   componentDidMount() {
@@ -101,6 +103,10 @@ class SmartContracter extends React.Component {
     this.setState({ TargetAction });
   };
 
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   addTargetDevice = count => {
     var count = this.state.count;
     var show = this.state.show;
@@ -108,6 +114,34 @@ class SmartContracter extends React.Component {
     this.setState({ show });
     count = count + 1;
     this.setState({ count });
+  };
+
+  createContract = () => {
+    var contract = new Object();
+    var Events = new Object();
+    var index;
+    contract.RootDevice = this.state.rootDevice;
+    contract.RootAction = this.state.action;
+    if (contract.RootAction === "off") {
+      contract.RootAction = "STOP";
+    }
+    var devs = this.state.TargetDevice;
+    var len = devs.length;
+    for (index = 0; index < len; index++) {
+      var device = this.state.TargetDevice[index];
+      var action = this.state.TargetAction[index];
+      if (action === "off") {
+        action = "STOP";
+      }
+      Events[device] = action;
+    }
+    contract.Events = Events;
+    //console.log(JSON.stringify(contract))
+    var authSocket = new WebSocket("ws://192.168.3.44:8000");
+    authSocket.onopen = () => {
+      authSocket.send(JSON.stringify(contract));
+    };
+    this.setState({ open: true });
   };
 
   generateTargets = () => {
@@ -248,12 +282,25 @@ class SmartContracter extends React.Component {
                   </Fab>
                 </Tooltip>
               </Paper>
+              <Dialog
+                open={this.state.open}
+                onClose={this.handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Smart Contract has been created!"}
+                </DialogTitle>
+                <DialogContent>
+                </DialogContent>
+              </Dialog>
             </main>
             <Fab
               color="primary"
               variant="extended"
               aria-label="Add Contract"
               className={classes.fab1}
+              onClick={this.createContract}
             >
               Create
             </Fab>

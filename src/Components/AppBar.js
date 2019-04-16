@@ -19,6 +19,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import Icon from "@material-ui/core/Icon";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import Avatar from "@material-ui/core/Avatar";
+import deepPurple from "@material-ui/core/colors/deepPurple";
 
 const theme = createMuiTheme({
   palette: {
@@ -94,6 +96,11 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3
+  },
+  purpleAvatar: {
+    margin: 10,
+    color: "#fff",
+    backgroundColor: deepPurple[500]
   }
 });
 
@@ -137,6 +144,9 @@ class MiniDrawer extends React.Component {
               <Typography variant="h6" color="inherit" noWrap>
                 PICOT
               </Typography>
+              <div align="right">
+                {/*<Avatar className={classes.purpleAvatar}>AM</Avatar>*/}
+              </div>
             </Toolbar>
           </AppBar>
           <Drawer

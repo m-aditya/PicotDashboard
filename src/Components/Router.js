@@ -48,7 +48,7 @@ class Router extends React.Component {
     var authDev = devices;
     this.setState({ authDev });
     localStorage.setItem("AuthList", JSON.stringify(devices));
-
+    console.log()
     var authSocket = new WebSocket("ws://192.168.3.43:8000");
     authSocket.onopen = () => {
       authSocket.send(JSON.stringify(this.state.authDev));
