@@ -11,9 +11,3 @@ Dashboard for the PICOT Project done in ReactJS using:
 - Styled Components
 - Material-UI
 - Prettier - an opinionated code formatter.
-
-### Todos
-
-- Fix SmartContracter Component
-- Try to further decompose components
-- Beautify
