@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 //import SideBar from "./Sidebar";
 import AppBar from "./AppBar";
+import Animation from "./Animation";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import { withStyles, withTheme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -77,7 +78,7 @@ class SmartContracter extends React.Component {
     TargetDevice: [],
     count: 1,
     show: new Array(10).fill(false),
-    open: false,
+    open: false
   };
 
   componentDidMount() {
@@ -140,8 +141,8 @@ class SmartContracter extends React.Component {
     var authSocket = new WebSocket("ws://192.168.3.44:8000");
     authSocket.onopen = () => {
       authSocket.send(JSON.stringify(contract));
+      this.setState({ open: true });
     };
-    this.setState({ open: true });
   };
 
   generateTargets = () => {
@@ -289,9 +290,10 @@ class SmartContracter extends React.Component {
                 aria-describedby="alert-dialog-description"
               >
                 <DialogTitle id="alert-dialog-title">
-                  {"Smart Contract has been created!"}
+                  {"Smart Contract has been created"}
                 </DialogTitle>
                 <DialogContent>
+                  <Animation />
                 </DialogContent>
               </Dialog>
             </main>

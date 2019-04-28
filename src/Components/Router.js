@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import App from "./App";
 import AuthDevice from "./AuthDevice";
 import SmartContracter from "./SmartContracter";
+import Settings from "./Settings";
+import axios from "axios";
 
 class Router extends React.Component {
   state = {
@@ -48,11 +50,34 @@ class Router extends React.Component {
     var authDev = devices;
     this.setState({ authDev });
     localStorage.setItem("AuthList", JSON.stringify(devices));
-    console.log()
+    console.log();
+
+    /*
     var authSocket = new WebSocket("ws://192.168.3.43:8000");
     authSocket.onopen = () => {
       authSocket.send(JSON.stringify(this.state.authDev));
     };
+    */
+
+    var bodyFormData = new FormData();
+
+    bodyFormData.set("clientid", "AuthDevice");
+    bodyFormData.set("topic", "AuthList");
+    var authorizationList = JSON.stringify(this.state.authDev);
+    bodyFormData.set("message", authorizationList);
+
+    var token = this.state.accessToken.token;
+
+    axios.defaults.headers.common["Authorization"] = token;
+    axios({
+      method: "post",
+      url: "http://192.168.3.44:8080/clientsend",
+      data: bodyFormData
+    })
+      .then(function(response) {})
+      .catch(function(error) {
+        console.log(error);
+      });
   };
 
   render() {
@@ -88,6 +113,11 @@ class Router extends React.Component {
             exact
             path="/SmartContract"
             render={props => <SmartContracter {...props} pState={this.state} />}
+          />
+          <Route
+            exact
+            path="/Settings"
+            render={props => <Settings {...props} pState={this.state} />}
           />
           <Route path="/" component={App} />
         </Switch>
