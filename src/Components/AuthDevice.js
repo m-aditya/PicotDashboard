@@ -145,7 +145,8 @@ class AuthDevice extends React.Component {
           <main id="page-wrap">
             <GridContainer>
               {Object.keys(this.state.devices).map(key =>
-                this.state.devices[key].status &&
+                this.state.devices[key].status && 
+                this.state.devices[key]!="AuthDevice" &&
                 !this.state.devices[key].blacklisted &&
                 !this.state.devices[key].authStat ? (
                   <Card2

@@ -50,7 +50,6 @@ class Router extends React.Component {
     var authDev = devices;
     this.setState({ authDev });
     localStorage.setItem("AuthList", JSON.stringify(devices));
-    console.log();
 
     /*
     var authSocket = new WebSocket("ws://192.168.3.43:8000");
@@ -63,7 +62,7 @@ class Router extends React.Component {
 
     bodyFormData.set("clientid", "AuthDevice");
     bodyFormData.set("topic", "AuthList");
-    var authorizationList = JSON.stringify(this.state.authDev);
+    var authorizationList = JSON.stringify(devices);
     bodyFormData.set("message", authorizationList);
 
     var token = this.state.accessToken.token;
